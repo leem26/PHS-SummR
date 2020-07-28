@@ -1,0 +1,54 @@
+---
+title: "Regression Exercise #1"
+author: "Matthew Lee"
+date: "7/27/2020"
+output: 
+  html_document:
+    includes:
+      in_header: header.HTML
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js"></script>
+<p>The following exercises will help illustrate concepts on how two variables are related, as demonstrated by their covariance and correlation. Feel free to run your own <code>R</code> code on your local machine, or utilize the code blocks on this site.</p>
+<div id="creating-random-variables" class="section level2">
+<h2>Creating random variables ———————————————–</h2>
+<p><code>R</code> let’s you generate your own random variables from common distribution functions like the normal, binomial, poisson, and uniform distributions we discussed in class.</p>
+<p>For example, the following code generates 3 realizations/random samples from a normal distribution with mean 45 (<code>mean</code>) and standard deviation (<code>sd</code>) 19. The function <code>rnorm()</code> takes in these arguments, along with the number of draws you want (<code>n</code>) and returns <code>n</code> random draws from the normal distribution you specify.</p>
+<!--- LEARNR EXAMPLE 1 --->
+<iframe style="margin:0 auto; min-width: 100%;" id="normalEx" class="interactive" src="https://leem26.shinyapps.io/regressionEx1-normalEx/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR EXAMPLE 1 --->
+<p>Next, generate a vector of 100 realizations from your favorite distribution and save the results to a vector (call it whatever you want!). Then, plot a histograms of all 100 realizations. This should resemble the distribution you chose to a degree. Feel free to increase the number of realizations (say from <code>n = 100</code> to <code>n = 1000</code>) and see what happens to the histogram.</p>
+<!--- LEARNR EXAMPLE 2 --->
+<iframe style="margin:0 auto; min-width: 100%;" id="normalPlot" class="interactive" src="https://leem26.shinyapps.io/regressionEx1-normalPlot/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR EXAMPLE 2 --->
+</div>
+<div id="covariance-correlation-and-independence--" class="section level2">
+<h2>Covariance, correlation, and independence ——————————-</h2>
+<p>In <code>R</code> we can calculate the correlation and covariance using the <code>cor()</code>and <code>cov()</code> functions. For example, the code below draws 1000 realizations from a normal distribution with mean 10 and standard deviation 2, and another 1000 realizations from a normal distribution with mean 8 and standard deviation 3. You can think of these as data on 1000 individuals on two variables: <code>x</code> and <code>y</code>. What do you get when you run this code? Why might that be?</p>
+<!--- LEARNR EXAMPLE 3 --->
+<iframe style="margin:0 auto; min-width: 100%;" id="corcov" class="interactive" src="https://leem26.shinyapps.io/regressionEx1-corcov/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR EXAMPLE 3 --->
+<p>What happens if we redefine <code>y</code> as a function of <code>x</code>? In other words, what happens if <code>y</code> and <code>x</code> are related by some given function <span class="math inline">\(y = 10 \times x\)</span>? Obtain the correlation and covariance between these two variables with this new definition of <code>y</code>.</p>
+<!--- LEARNR EXAMPLE 4 --->
+<iframe style="margin:0 auto; min-width: 100%;" id="corcovScaled" class="interactive" src="https://leem26.shinyapps.io/regressionEx1-corcovScaled/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR EXAMPLE 4 --->
+<p>To generate two random variables with known covariance and/or correlation we can also simulate a joint distribution, in this case the multivariate normal, using a function from the <code>MASS</code> package. Recall that a package in R is just a set of functions and objects that have been compiled into a single collection. One function from <code>MASS</code> is <code>mvrnorm()</code>, which as it suggests, returns values from the <strong>multi-</strong>variate normal distribution.</p>
+<p>Use the <code>mvrnorm()</code> function to generate 100 samples/realizations from the multivariate normal with means 10 and 15, and covariance 40. You can read about the documentation for this function <a href="https://www.rdocumentation.org/packages/rockchalk/versions/1.8.144/topics/mvrnorm" target="_blank">here</a>, which will tell you how to specify the arguments <code>mu</code>, <code>Sigma</code>, and <code>n</code>. Also recall that the correlation <span class="math inline">\(\rho\)</span> between two variables is given by:</p>
+<p><span class="math display">\[ \rho(X, Y) = \frac{\text{Cov}(X,Y)}{\sigma(X) \sigma(Y)}\]</span></p>
+<p>Where <span class="math inline">\(\text{Cov()}\)</span> is the covariance, and <span class="math inline">\(\sigma()\)</span> is the standard deviation for each variable. The <code>sd()</code> function returns standard deviation values in <code>R</code>.</p>
+<p>As a bonus, graph the relationship between these two variables. What do you see?</p>
+<!--- LEARNR EXAMPLE 5 --->
+<iframe style="margin:0 auto; min-width: 100%;" id="corcovMVN" class="interactive" src="https://leem26.shinyapps.io/regressionEx1-corcovMVN/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR EXAMPLE 5 --->
+<script>
+  iFrameResize({}, ".interactive");
+</script>
+</div>
