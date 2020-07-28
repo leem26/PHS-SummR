@@ -12,8 +12,9 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+<center>
 {{% tweet 1156589945676554241 %}} 
+</center>
 
 The following exercises will help illustrate concepts on how two variables are related, as demonstrated by their covariance and correlation. Feel free to run your own `R` code on your local machine, or utilize the code blocks on this site. 
 
