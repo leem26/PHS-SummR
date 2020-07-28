@@ -13,6 +13,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">me: I discovered a new statistical law that says that all jokes on twitter are based on other jokes on twitter<br>friend: that’s really cool! what do you call it?<br>me: *slowly takes off sun glasses* regression to the meme</p>&mdash; 🔥Kareem Carr🔥 (@kareem_carr) <a href="https://twitter.com/kareem_carr/status/1156589945676554241?ref_src=twsrc%5Etfw">July 31, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 The following exercises will help illustrate concepts on how two variables are related, as demonstrated by their covariance and correlation. Feel free to run your own `R` code on your local machine, or utilize the code blocks on this site. 
 
 ## Creating random variables -----------------------------------------------
