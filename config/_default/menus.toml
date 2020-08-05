@@ -21,8 +21,13 @@
   identifier = "mathExParent"
   
 [[main]]
-  name = "Matrices"
+  name = "Kat Slide Test"
   url = "/katSlideTest/katSlideTest.html"
+  parent = "mathExParent"
+
+[[main]]
+  name = "Matrice Example"
+  url = "matricesEx"
   parent = "mathExParent"
 
 [[main]]
