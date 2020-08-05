@@ -15,9 +15,21 @@
   parent = "regExParent"
 
 [[main]]
+  name = "Math"
+  url = "mathEx" 
+  weight = 2
+  identifier = "mathExParent"
+  
+[[main]]
+  name = "Matrices"
+  url = "matricesEx"
+  parent = "mathExParent"
+
+[[main]]
   name = "Contact"
   url = "#contact"
   weight = 60
+
 
 
 # Link to a PDF of your resume/CV from the menu.
