@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Matrices</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kat Sadikova" />
+    <meta name="date" content="2020-08-04" />
+    <script src="katSlideTest_files/header-attrs/header-attrs.js"></script>
+    <link href="katSlideTest_files/remark-css/default.css" rel="stylesheet" />
+    <link href="katSlideTest_files/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Matrices
+### Kat Sadikova
+### 2020-08-04
+
+---
+
+&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js"&gt;&lt;/script&gt;
+
+class:middle,center
+
+
+&lt;style type="text/css"&gt;
+/* custom.css */
+.title-slide {
+  background-image: url("img/camp.svg");
+  background-size: cover;
+}
+
+.left-code {
+  #color: #777;
+  width: 43%;
+  height: 92%;
+  float: left;
+  #font-size: 0.8em;
+  position: absolute;
+}
+.right-plot {
+  width: 50%;
+  float: right;
+  padding-left: 5%;
+}
+.left-col {
+  width: 60%;
+  float: left;
+  position: absolute;
+}
+.right-col {
+  width: 30%;
+  float: right;
+  padding-left: 5%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+
+h4 {
+  color: #F97B64;
+  font-size: 22px;
+}
+
+h1, h2, h3, h4 {
+  margin-top:0;
+}
+
+.inverse h1, .inverse h2, .inverse h3 {
+  color: #1F4257;
+}
+.remark-slide thead, .remark-slide tr:nth-child(2n) {
+  background-color: white;
+}
+.title-slide, .title-slide h1, .title-slide h2, .title-slide h3 {
+color: #FFFFFF;
+}
+&lt;/style&gt;
+
+
+
+
+# Check-in
+
+Please answer a few questions in this [check-in](https://forms.gle/TLtGxnFXAfd1jHYZ6) before we begin.
+
+---
+
+
+
+class:middle,center
+.left[
+## How we read, store, represent data: Scalars, vectors, matrices 
+]
+
+First, we will go through a brief introduction of matrix notation and linear algebra. It's not as daunting as it sounds! And the best news is that the computers do the matrix math for us, allowing us to assess relationships between variables, run regressions and address our hypotheses. This refresher is here to highlight the utility of matrices, provide an intuition into how computers compute, and highlight the role of matrix math in statistical analysis.
+
+
+---
+
+
+
+class:middle,center
+.left[
+### Scalars, vectors, matrices
+]
+
+`\(a = a \text{ , a scalar}\)`
+
+&lt;br&gt;
+--
+
+`\(\mathbf{y} =\begin{bmatrix}y_1 \\ y_2 \\ \vdots \\ y_n\end{bmatrix}\text{,  a vector of length } n\)`
+
+&lt;br&gt;
+--
+
+`\(\mathbf{X} = \begin{bmatrix} x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1p} \\ x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2p} \\ \vdots &amp;\vdots &amp; \ddots &amp; \vdots \\x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{np}\end{bmatrix} \text{,  an }n \times p \text{ matrix}\)`
+
+
+---
+
+
+.left[
+###Note on dimensions
+]
+
+.center[
+
+![](https://media.giphy.com/media/5yLgocAcF0DYJHZtQqs/giphy.gif)
+]
+
+Imagine this very happy Ron Swanson **Rowing a Canoe** and remember that **Rows come before Columns** when indexing elements of a matrix
+
+---
+
+
+class:middle
+.left[
+###Note on dimensions
+]
+
+We read dimensions like `\(n \times p\)` as **rows** by **columns**. `\(X\)` is a `\(3x4\)` matrix:
+
+`$$\mathbf{X}_{3 \times 4} = \begin{bmatrix} x_{11} &amp; x_{12} &amp; x_{13} &amp; x_{14}\\ x_{21} &amp; x_{22} &amp; x_{23} &amp; x_{24}\\ x_{31} &amp; x_{32} &amp; x_{33} &amp; x_{34} \end{bmatrix}_{3\times 4}$$`
+
+Individual elements are indexed in the same *row-column* order: `\(x_{23}\)` is the element in the second row and third column.
+
+---
+
+
+
+class:middle
+.left[
+###Data example
+]
+
+Let's look at a simple example - data stored in a matrix `\(X\)` with 10 individuals and 4 variables:
+- age in years
+- height in inches
+- a dichotomous indicator of whether the individual likes dogs)
+- year of birth
+
+
+---
+
+
+
+class:middle,center
+.left[
+###Data example
+]
+
+`$$\mathbf{X} = \begin{bmatrix} 25 &amp; 67 &amp; \cdots &amp; 1995 \\ 38 &amp; 63 &amp; \cdots &amp; 1982 \\ \vdots &amp;\vdots &amp; \ddots &amp; \vdots \\ 41 &amp; 59 &amp; \cdots &amp; 1979 \end{bmatrix}$$`
+
+`$$age_{i} = 25, \text{ age of participant i=1 }$$`
+
+`$$\mathbf{age} = \begin{bmatrix} 25 \\ 38 \\ \vdots \\ 41 \end{bmatrix} \text{,  ages of all the participants}$$`
+
+---
+
+
+
+class:middle,center
+.left[
+### In R
+]
+
+__Build the data set__
+
+&lt;!--- LEARNR EXAMPLE 1 ---&gt;
+&lt;iframe style="margin:0 auto; min-width: 100%;" id="create_dat" class="interactive" src="https://leem26.shinyapps.io/Matrices_create_dat/" scrolling="no" frameborder="no"&gt;&lt;/iframe&gt;
+&lt;!--- END LEARNR EXAMPLE 1 ---&gt;
+
+---
+
+
+
+class:middle,center
+.left[
+### In R
+]
+
+__What are the dimensions of this matrix?__
+
+&lt;!--- LEARNR EXAMPLE 2 ---&gt;
+&lt;iframe style="margin:0 auto; min-width: 100%;" id="get_dim" class="interactive" src="https://leem26.shinyapps.io/Matrices_get_dim/" scrolling="no" frameborder="no"&gt;&lt;/iframe&gt;
+&lt;!--- END LEARNR EXAMPLE 2 ---&gt;
+
+---
+
+
+
+class:middle,center
+.left[
+### In R
+]
+
+
+__Let's inspect parts of this matrix (vectors and scalars)__
+
+&lt;!--- LEARNR EXAMPLE 3 ---&gt;
+&lt;iframe style="margin:0 auto; min-width: 100%;" id="get_age" class="interactive" src="https://leem26.shinyapps.io/Matrices_get_age/" scrolling="no" frameborder="no"&gt;&lt;/iframe&gt;
+&lt;!--- END LEARNR EXAMPLE 3 ---&gt;
+
+---
+
+class:middle,center
+
+**Q**: What will `dat[5, 2]` produce? What about `dat[2, 5]`?
+
+---
+
+
+class:middle
+.left[
+### Transposing vectors and matrices
+]
+
+We can flip a vector on its side by **transposing** it.
+
+`\(\mathbf{y} =\begin{bmatrix}y_1 \\ y_2 \\ \vdots \\ y_n\end{bmatrix}\text{,  a vector of length } n\)`
+
+`\(\mathbf{y}^T =\begin{bmatrix}y_1 &amp; y_2 &amp; \cdots &amp; y_n\end{bmatrix}\text{,  a row vector of length } n\)`
+
+**Note:** We may also refer to transposed vectors (and matrices) with "prime" notation: `\(\mathbf{y}^T = \mathbf{y}'\)`
+(Not to be confused with a derivative!)
+---
+
+
+class:middle
+.left[
+### Transposing vectors and matrices
+]
+
+We can also think of vectors as single-columned matrices:
+
+- A column vector `\(\mathbf{y}\)` of length `\(n\)` has dimensions `\(n \times 1\)`.
+.center[
+`\(\begin{bmatrix}y_1 \\ y_2 \\ \vdots \\ y_n\end{bmatrix}_{n\times 1}\)`
+]
+
+
+- A row vector `\(\mathbf{y}'\)`  of length `\(n\)` has dimensions `\(1 \times n\)`.
+.center[
+`\(\begin{bmatrix}y_1 &amp; y_2 &amp; \cdots &amp; y_n\end{bmatrix}_{1\times n}\)`
+]
+
+Thinking about vectors this way will be really handy when we multiply vectors and matrices!
+
+---
+
+
+class:middle
+.left[
+### Transposing vectors and matrices
+]
+
+We can also transpose matrices
+
+`\(\mathbf{X} = \begin{bmatrix} 25 &amp; 67 &amp; \cdots &amp; 1995 \\ 38 &amp; 63 &amp; \cdots &amp; 1982 \\ \vdots &amp;\vdots &amp; \ddots &amp; \vdots \\ 41 &amp; 59 &amp; \cdots &amp; 1979 \end{bmatrix}\qquad \mathbf{X}^T = \mathbf{X}' = \begin{bmatrix} 25 &amp; 38 &amp; \cdots &amp; 41 \\ 67 &amp; 63 &amp; \cdots &amp; 59 \\ \vdots &amp;\vdots &amp; \ddots &amp; \vdots \\ 1995 &amp; 1982 &amp; \cdots &amp; 1979 \end{bmatrix}\)`
+
+
+The former columns (variables) are now rows. The former rows (participants) are now columns.
+
+**This will be handy mathematically (but you probably wouldn't just do it to your dataset for fun!).**
+
+
+&lt;script&gt;
+  iFrameResize({}, ".interactive");
+&lt;/script&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

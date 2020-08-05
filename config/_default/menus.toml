@@ -22,7 +22,7 @@
   
 [[main]]
   name = "Matrices"
-  url = "matricesEx"
+  url = "/katSlideTest/katSlideTest.html"
   parent = "mathExParent"
 
 [[main]]
