@@ -16,7 +16,7 @@
 
 [[main]]
   name = "Math"
-  url = "mathEx" 
+  url = "mathEx"
   weight = 2
   identifier = "mathExParent"
   
@@ -29,6 +29,8 @@
   name = "Matrice Example"
   url = "matricesEx"
   parent = "mathExParent"
+
+
 
 [[main]]
   name = "Contact"
