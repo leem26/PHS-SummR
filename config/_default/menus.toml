@@ -22,7 +22,7 @@
   
 [[main]]
   name = "Kat Slide Test"
-  url = "/katSlideTest/katSlideTest.html"
+  url = "/katSlideTest/index.html"
   parent = "mathExParent"
 
 [[main]]
