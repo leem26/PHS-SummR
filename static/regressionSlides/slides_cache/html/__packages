@@ -1,0 +1,16 @@
+base
+ggplot2
+patchwork
+dplyr
+sysfonts
+showtextdb
+showtext
+magick
+gganimate
+transformr
+xaringanthemer
+ggdag
+dagitty
+RCurl
+reshape2
+tidyr

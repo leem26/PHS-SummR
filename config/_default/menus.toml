@@ -8,6 +8,11 @@
   url = "regressionEx"
   weight = 1
   identifier = "regExParent"
+  
+[[main]]
+  name = "Regression Slides"
+  url = "/regressionSlides/slides.html"
+  parent = "regExParent"
 
 [[main]]
   name = "Regression 1"
@@ -29,6 +34,9 @@
   name = "Matrice Example"
   url = "matricesEx"
   parent = "mathExParent"
+
+
+
 
 
 
