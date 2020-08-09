@@ -13,11 +13,13 @@
   name = "Regression Slides"
   url = "/regressionSlides/slides.html"
   parent = "regExParent"
+  weight = 1
 
 [[main]]
   name = "Regression 1"
   url = "regressionEx1"
   parent = "regExParent"
+  weight = 2
 
 [[main]]
   name = "Math"
