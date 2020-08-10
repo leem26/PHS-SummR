@@ -24,7 +24,9 @@ to evaluate all the code in a given chunk.
 
 
 
-## Creating random variables -----------------------------------------------
+## Creating random variables
+
+------------------------------------------------
 
 `R` let's you generate your own random variables from common distribution functions like the normal, binomial, poisson, and uniform distributions we discussed in class.
 
@@ -42,7 +44,9 @@ Next, generate a vector of 100 realizations from your favorite distribution and 
 <!--- END LEARNR EXAMPLE 2 --->
 
 
-## Covariance, correlation, and independence -------------------------------
+## Covariance, correlation, and independence 
+
+------------------------------------------------
 
 In `R` we can calculate the correlation and covariance using the `cor()`and `cov()` functions. For example, the code below draws 1000 realizations from a normal distribution with mean 10 and standard deviation 2, and another 1000 realizations from a normal distribution with mean 8 and standard deviation 3. You can think of these as data on 1000 individuals on two variables: `x` and `y`. What do you get when you run this code? Why might that be?
 
@@ -59,18 +63,50 @@ What happens if we redefine `y` as a function of `x`? In other words, what happe
 
 To generate two random variables with known covariance and/or correlation we can also simulate a joint distribution, in this case the multivariate normal, using a function from the `MASS` package. Recall that a package in R is just a set of functions and objects that have been compiled into a single collection. One function from `MASS` is `mvrnorm()`, which as it suggests, returns values from the **multi-**variate normal distribution. 
 
-Use the `mvrnorm()` function to generate 100 samples/realizations from the multivariate normal with means 10 and 15, and covariance 40. You can read about the documentation for this function [here](https://www.rdocumentation.org/packages/rockchalk/versions/1.8.144/topics/mvrnorm){target="_blank"}, which will tell you how to specify the arguments `mu`, `Sigma`, and `n`. Also recall that the correlation $\rho$ between two variables is given by:
+Use the `mvrnorm()` function to generate 1000 samples/realizations from the multivariate normal distribution. Variable $X$ should have mean 10 and variable $Y$ should have mean 15. The variance of $X$ is 30, and the variance of $Y$ is 60. Let the covariance between $X$ and $Y$ be 40. You can read about the documentation for this function [here](https://www.rdocumentation.org/packages/rockchalk/versions/1.8.144/topics/mvrnorm){target="_blank"}, which will tell you how to specify the arguments `mu`, `Sigma`, and `n`. Also recall that the correlation $\rho$ between two variables is given by:
 
 $$ \rho(X, Y) = \frac{\text{Cov}(X,Y)}{\sigma(X) \sigma(Y)}$$
 
-Where $\text{Cov()}$ is the covariance, and $\sigma()$ is the standard deviation for each variable. The `sd()` function returns standard deviation values in `R`. 
-
-As a bonus, graph the relationship between these two variables. What do you see?
+Where $\text{Cov()}$ is the covariance, and $\sigma()$ is the standard deviation for each variable. The `sd()` function returns standard deviation values in `R`. Print the covariance and correlation matrices between $X$ and $Y$, and graph the relationship between these two variables on a 2-dimensional plane. What do you see?
 
 <!--- LEARNR EXAMPLE 5 --->
 <iframe style="margin:0 auto; min-width: 100%;" id="corcovMVN" class="interactive" src="https://leem26.shinyapps.io/regressionEx1-corcovMVN/" scrolling="no" frameborder="no"></iframe>
 <!--- END LEARNR EXAMPLE 5 --->
 
+This scatter plot tells us that $X$ and $Y$ co-occur with greater frequency around their means. If we want to visualize the **multi**-variate probability distribution, we need to extend our perspective to 3 dimensions. The `plotly` package allows us to create really neat interactive plots -- check out the one below! 
+
+
+```{r, echo=TRUE, out.width ='100%', eval = TRUE, warning=FALSE, message=FALSE}
+library(MASS)
+library(plotly)
+library(mvtnorm)
+library(ggplot2)
+library(dplyr)
+library(widgetframe)
+
+# generate data from the multivariate normal
+mvnorm1000 <- 
+  mvrnorm(
+    n = 1000, 
+    mu = c(10, 15), 
+    Sigma = 
+      matrix(c(30, 40, 40, 60), 
+             nrow=2, ncol=2, byrow=FALSE)
+          )
+
+# compute density surface
+dens <- kde2d(mvnorm1000[,1], mvnorm1000[,2])
+
+# plot object
+p <-
+  plot_ly(x = dens$x,
+          y = dens$y,
+          z = dens$z) %>% 
+  add_surface()
+
+# place plot object in iframe
+frameWidget(p, height = 500, width = '100%', )
+```
 
 
 

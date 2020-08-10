@@ -1,0 +1,159 @@
+---
+title: "Regression Exercise #2"
+author: "Matthew Lee"
+date: "7/27/2020"
+output: 
+  html_document:
+    includes:
+      in_header: header.HTML
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js"></script>
+<center>
+{{% tweet 1258607339013312517 %}}
+</center>
+<p>Let’s used what we’ve learned about regression to look at how these concepts can be applied to data in <code>R</code>. As highlighted by the tweet above, regression is a tool we can use to understand the world we live in – but we should never abstract it from our subject matter knowledge or stop questionning alternative explanations (as a side note, I <strong>highly</strong> recommend following <span class="citation">@EpiEllie</span> on twitter… it’s :fire: :100: :fire: :100: and perfect for procrasti-learning)</p>
+<div id="simulate-some-data" class="section level2">
+<h2>Simulate some data</h2>
+<hr />
+<p>If you’re feeling up to it, follow the guidelines below to generate some data. If not, take a look at the solution and skip to the next section. Let’s generate some sample data, which we will use to estimate parameters of a linear model using ordinary least squares (OLS). Create a function called <code>generate_data()</code> that takes in a single argument, <code>n</code>, which represents the sample size of our simulated data. In this function:</p>
+<ol style="list-style-type: decimal">
+<li>Draw the variables for <code>age</code>, <code>income</code>, and <code>bwt</code> (birthweight) according to the expressions given below.</li>
+<li>Return <code>age</code>, <code>income</code>, and <code>bwt</code> in a data frame object.</li>
+</ol>
+<p><span class="math display">\[\begin{align*}
+  \texttt{age} &amp;= \text{Uniform}(min = 25, max = 60) \\
+  \texttt{income} &amp;= (\texttt{age} \times 500) \\
+                      &amp;\ \ \ \ \ \ \  + \text{Beta}(shape1 = 2, shape2 = 3.46,  ncp = 0) \times 100000 \\
+                      &amp;\ \ \ \ \ \ \ - 15000 \\
+ \texttt{bwt} &amp;= 2450 + (\texttt{income/1000}) \times 14  \\
+    &amp;\ \ \ \ \ \ \ - (\texttt{age} \times 2) + \text{Normal}(mean = -100, sd = 100)
+\end{align*}\]</span></p>
+<p>The <code>runif()</code> function in <code>R</code> draws realizations of the Uniform distribution, the <code>rbeta()</code> function draws realizations of the Beta distribution, and the <code>rnorm()</code> function draws realizations of the Normal distribution.</p>
+<p>Set the random seed to 1, i.e. (<code>set.seed(1)</code>). Using the <code>generate_data()</code> function you just created, draw <code>n=1000</code> observations and assign the data to a <code>data.frame</code> object called <code>dat</code>.</p>
+<!--- LEARNR SIM DATA --->
+<iframe style="margin:0 auto; min-width: 100%;" id="simulateEx" class="interactive" src="https://leem26.shinyapps.io/regressionEx-simulate/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR SIM DATA  --->
+</div>
+<div id="choose-a-statistical-model" class="section level2">
+<h2>Choose a statistical model</h2>
+<hr />
+<p>Take a look at the variables found in <code>dat</code>, using the <code>summary()</code> function. Examine the first 6 rows of the data using the <code>head()</code> function. Create a scatter plot with <code>dat$age</code> on the x-axis and <code>dat$bwt</code> on the y-axis, using the <code>plot()</code> function.</p>
+<!--- LEARNR EXPLORE DATA --->
+<iframe style="margin:0 auto; min-width: 100%;" id="exploreData" class="interactive" src="https://leem26.shinyapps.io/regressionEx-exploredata/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR EXPLORE DATA  --->
+<p>In this case, does a linear relationship between <code>age</code> and <code>bwt</code> seem reasonable?</p>
+</div>
+<div id="ols-part-1-implement-using-lm" class="section level2">
+<h2>OLS Part 1: Implement using <code>lm()</code></h2>
+<hr />
+<p>The <code>lm()</code> function in <code>R</code> estimates parameters from linear models using ordinary least squares. There are two main structural arguments for this function, <code>formula</code>, and <code>data</code>.</p>
+<ul>
+<li>The <code>data</code> argument is straightforward, and should be a <code>data.frame</code> object that holds your variables.</li>
+<li>The <code>formula</code> argument should be formatted as: <code>outcomeVar ~ explanatoryVar</code>, and tells <code>R</code> which variable is the outcome and which are covariates (separated by the “~” symbol).</li>
+</ul>
+<p>For example, we call the function and assign it to the object, <code>fit.object</code> below. When we call the <code>summary()</code> function on our <code>fit.object</code>, <code>R</code> returns useful information about the procedure and presents some key results.</p>
+<pre class="r"><code>fit.object &lt;- lm(outcome ~ exposure + covariate1 + covariate2 ..., data = mydata)
+summary(fit.object)</code></pre>
+<p>Using the <code>lm()</code> function, estimate the parameters from a regression model with OLS with birthweight (<code>bwt</code>) as the outcome and <code>age</code> as the single covariate. Assume a linear relationship between birthweight and age. Assign the results from this procedure a new object, <code>ols.fit</code>, then call <code>summary()</code> on this new object.</p>
+<!--- LEARNR REG 1 --->
+<iframe style="margin:0 auto; min-width: 100%;" id="ols1" class="interactive" src="https://leem26.shinyapps.io/regressionEx-ols1/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR REG 1  --->
+<p>What do you conclude about the relationship between age and birthweight? How do you interpret the coefficient for age?</p>
+</div>
+<div id="ols-part-2-functional-form" class="section level2">
+<h2>OLS Part 2: Functional form</h2>
+<hr />
+<p>In the previous section, we assumed a linear relationship between age and birthweight. What if we assumed a quadratic relationship instead? Repeat the regression analysis from above, this time also including a second covariate for <strong>squared</strong> age. There are multiple options for creating this variable:</p>
+<ul>
+<li>Generate a variable <code>age_squared</code> in our <code>dat</code> dataset by multiplying the <code>age</code> variable by itself, then include this term in our formula expression.</li>
+</ul>
+<pre class="r"><code>dat$age_squared &lt;- dat$age * dat$age</code></pre>
+<ul>
+<li>Create this variable when we specify our formula in <code>lm()</code>, using the <code>I()</code> function. The <code>I()</code> function (see <code>?I</code> for more info) tells <code>R</code> to evaluate whatever is inside its parentheses <strong>before</strong> including it in the formula. Without it, <code>R</code> ignores the fact that we would like a term for squared age.</li>
+</ul>
+<pre class="r"><code>ols.fit_squared &lt;- lm(bwt ~ age + I(age^2), data = dat)</code></pre>
+<p>Repeat the previous analysis from <em>Part 1</em>, this time with a second covariate for <strong>squared age</strong>, and save the results to <code>ols.fit_squared</code>. Call <code>summary()</code> on this object to look at the results, what do you conclude?</p>
+<!--- LEARNR REG 2 --->
+<iframe style="margin:0 auto; min-width: 100%;" id="ols2" class="interactive" src="https://leem26.shinyapps.io/regressionEx-ols2/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR REG 2  --->
+</div>
+<div id="ols-part-3-confounding" class="section level2">
+<h2>OLS Part 3: Confounding</h2>
+<hr />
+<p>Now let’s say we’re interested in the <strong>effect</strong>, not just the association, between age and birthweight. <strong>AND</strong> let’s assume that the only source of potential confounding for the age-birthweight relationship is income (in reality this is unlikely). Repeat the regression analysis from <em>Part 1</em>, but this time include the covariate <code>income</code> in your regression equation. Save your results to a new object, <code>ols.fit_income</code>, and look at the results.</p>
+<!--- LEARNR REG 3 --->
+<iframe style="margin:0 auto; min-width: 100%;" id="ols3" class="interactive" src="https://leem26.shinyapps.io/regressionEx-ols3/" scrolling="no" frameborder="no">
+</iframe>
+<!--- END LEARNR REG 3  --->
+<p>How does the coefficient for <code>age</code> differ between <em>Part 1</em> and <em>Part 3</em>? Why do you think this is the case? (hint: look at the simulation set up before Part 1).</p>
+</div>
+<div id="visualizing-models" class="section level2">
+<h2>Visualizing Models</h2>
+<hr />
+<p>A useful step in model building is to plot the results of our estimation alongside the observed data, in order to make sure our results are sensible. The code below plots the predicted lines from each of the 3 models we ran, against a scatter plot of age vs. birthweight. The fitted values of birthweight for the last model, with income as a covariate, is predicted at the mean income for the dataset.</p>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)
+library(ggsci)
+library(reshape2)
+library(tidyr)
+library(data.table)
+
+# load data
+set.seed(1)
+dat &lt;- generate_data(n = 1000)
+
+# fits
+ols.fit &lt;- lm(bwt ~ age, data = dat)
+ols.fit_squared &lt;- lm(bwt ~ age + I(age^2), data = dat)
+ols.fit_income &lt;- lm(bwt ~ age + income, data = dat)
+
+# predictions according to each model
+pred.dat &lt;- dat
+pred.dat &lt;- 
+  pred.dat %&gt;% 
+  mutate(income = mean(income))
+
+pred.dat$yhat_ols1 &lt;- predict(ols.fit, newdata = pred.dat, se.fit = FALSE, &quot;response&quot;)
+pred.dat$yhat_ols2 &lt;- predict(ols.fit_squared, newdata = pred.dat, se.fit = FALSE, &quot;response&quot;)
+pred.dat$yhat_ols3 &lt;- predict(ols.fit_income, newdata = pred.dat, se.fit = FALSE, &quot;response&quot;)
+
+# convert to long dataset for plotting
+id.vars &lt;- c(&quot;age&quot;, &quot;income&quot;, &quot;bwt&quot;)
+measure.vars &lt;- 
+  list(
+    prediction = c(&#39;yhat_ols1&#39;, &#39;yhat_ols2&#39;, &#39;yhat_ols3&#39;)
+  )
+pred.dat.long &lt;- 
+  reshape2::melt(
+    setDT(pred.dat),
+    id.vars = id.vars,
+    measure.vars = measure.vars,
+    variable.name = &quot;Model: &quot;)
+pred.dat.long$`Model: ` &lt;- factor(
+  pred.dat.long$`Model: `,
+  labels = c(&quot;OLS, bwt ~ age&quot;, 
+             &quot;OLS, bwt ~ age + I(age^2)&quot;,
+             &quot;OLS, bwt ~ age + income&quot;)
+)
+
+# plot using ggplot2
+ggplot(pred.dat.long[1:3000,], 
+       aes(x = age, y = bwt, color = `Model: `, group = `Model: `)) + 
+  geom_point(color = &quot;black&quot;, shape = 21, alpha = 0.2) + 
+  geom_line(aes(x = age, y = value), size = 1) + 
+  theme_bw() + 
+  scale_color_futurama() + 
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="/regressionEx2/index_files/figure-html/unnamed-chunk-5-1.png" width="100%" /></p>
+<script>
+  iFrameResize({}, ".interactive");
+</script>
+</div>

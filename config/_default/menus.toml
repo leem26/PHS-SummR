@@ -10,16 +10,22 @@
   identifier = "regExParent"
   
 [[main]]
-  name = "Regression Slides"
+  name = "Slides"
   url = "/regressionSlides/slides.html"
   parent = "regExParent"
   weight = 1
 
 [[main]]
-  name = "Regression 1"
+  name = "ExRcise #1"
   url = "regressionEx1"
   parent = "regExParent"
   weight = 2
+  
+[[main]]
+  name = "ExRcise #2"
+  url = "regressionEx2"
+  parent = "regExParent"
+  weight = 3
 
 [[main]]
   name = "Math"
