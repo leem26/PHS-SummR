@@ -191,7 +191,7 @@ A note: our outcome `Y.con` is continuous, rather than discrete, to take into ac
 Suppose that we actually know the **true** relationships between these variables and how they were generated in the population. Specifically:
 
 <br>
-```{r, echo=FALSE, fig.align="center", fig.height=3, fig.width=6}
+```{r, echo=FALSE, fig.align="center", fig.height=3, fig.width=6, warning=FALSE, message=FALSE}
 library(ggdag)
 library(dagitty)
 dag <- dagitty("dag{Y <- W -> A}")
@@ -247,7 +247,7 @@ When two variables are **correlated**, we are trying to get at this idea that tw
 
 .center[
 <a href="https://www.tylervigen.com/spurious-correlations">
-  <img src="/staticfigs/funcorrelation.svg" alt="HTML tutorial" style="width:80%;height:80%;">
+  <img src="staticfigs/funcorrelation.svg" alt="HTML tutorial" style="width:80%;height:80%;">
 </a>
 ]
 
@@ -423,7 +423,7 @@ Now we've added dashed lines representing the **mean** hours of sleep and the **
 # covariance 
 
 
-```{r, echo=FALSE, fig.align="center", fig.showtext = TRUE, fig.height=1.8, fig.width=4, dpi=400, warning=TRUE}
+```{r, echo=FALSE, fig.align="center", fig.showtext = TRUE, fig.height=1.8, fig.width=4, dpi=400, warning=FALSE, message=FALSE}
 library(reshape2)
 library(tidyr)
 
@@ -594,7 +594,7 @@ $$ \rho_{X,Y} = \frac{\text{Cov(X,Y)}}{\sqrt{\text{Var}(X)}\sqrt{\text{Var}(Y)}}
 Unlike the covariance, the correlation $\rho$ is:
 - **Not** sensitive to scale, and is bounded between -1 and 1
 - **Does** tell us about the strength of the relationship
-- Intuitive, the correlation between a r.v. with itself is $\rho_{X,X} = 1$
+- **More intuitive**, the correlation between a r.v. with itself is $\rho_{X,X} = 1$
   
   
 ---
@@ -1203,7 +1203,7 @@ $$E(Y \mid X = (x + 1)) = \beta_0 + \beta_1 (x + 1) \tag{2} $$
 
 # 5a. statistical model
 
-If we subtract equation (2) from equation (1), we get:
+If we subtract equation (1) from equation (2), we get:
 \begin{align*}
   E(Y \mid X = (x + 1)) - E(Y \mid X = x) &=  \beta_0 + \beta_1 (x + 1)\\
   & \  - (\beta_0 + \beta_1 x) \\
@@ -1277,7 +1277,7 @@ ggplot(pred.dat, aes(x = A.con, y = Y.con)) +
 ```
 
 <ol start = 2>
-<li> Calculate the difference between the observed points and the value of $E(Y)$ predicted by our candidate model, and square it.  
+<li> Calculate the difference between the observed points and the value of E(Y) predicted by our candidate model, and square it.  
 </ol>
 
 ---
@@ -1290,7 +1290,7 @@ ggplot(pred.dat, aes(x = A.con, y = Y.con)) +
 Let's look at the steps in the OLS algorithm:
 
 .center[
-<img src="/staticfigs/ols.gif" style="width:67%;height:50%;">
+<img src="staticfigs/ols.gif" style="width:67%;height:50%;">
 ]
  
 <ol start = 3>
@@ -1414,7 +1414,7 @@ class: inverse
 
 .pinkbinv[But wait!] Remember our true data-generating process for the FUN study. In reality, sleep hours .largebinv[does not] affect delivery service use. 
 
-```{r, echo=FALSE, fig.align="center", fig.height=3, fig.width=6}
+```{r, echo=FALSE, fig.align="center", fig.height=3, fig.width=6, warning=FALSE, message=FALSE}
 library(ggdag)
 library(dagitty)
 dag <- dagitty("dag{Y <- W -> A}")

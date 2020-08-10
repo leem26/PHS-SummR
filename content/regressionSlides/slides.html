@@ -193,7 +193,7 @@ i.e. We can’t study the relationship between two variables <strong>when eithe
 <p>Unlike the covariance, the correlation <span class="math inline">\(\rho\)</span> is:
 - <strong>Not</strong> sensitive to scale, and is bounded between -1 and 1
 - <strong>Does</strong> tell us about the strength of the relationship
-- Intuitive, the correlation between a r.v. with itself is <span class="math inline">\(\rho_{X,X} = 1\)</span></p>
+- <strong>More intuitive</strong>, the correlation between a r.v. with itself is <span class="math inline">\(\rho_{X,X} = 1\)</span></p>
 <!-------------------------------------->
 <!-- Correlation Geometry             -->
 <!-------------------------------------->
@@ -344,7 +344,7 @@ i.e. We can’t study the relationship between two variables <strong>when eithe
 </div>
 <div id="a.-statistical-model-1" class="section level1">
 <h1>5a. statistical model</h1>
-<p>If we subtract equation (2) from equation (1), we get:
+<p>If we subtract equation (1) from equation (2), we get:
 <span class="math display">\[\begin{align*}
   E(Y \mid X = (x + 1)) - E(Y \mid X = x) &amp;=  \beta_0 + \beta_1 (x + 1)\\
   &amp; \  - (\beta_0 + \beta_1 x) \\
@@ -397,7 +397,7 @@ i.e. We can’t study the relationship between two variables <strong>when eithe
 <h1>5b. estimation</h1>
 <p>Let’s look at the steps in the OLS algorithm:</p>
 <p>.center[
-<img src="/staticfigs/ols.gif" style="width:67%;height:50%;">]</p>
+<img src="staticfigs/ols.gif" style="width:67%;height:50%;">]</p>
 <ol start = 3>
 <li>
 Find the combination of intercept and slope that <b>minimizes the average of the squared distances</b>
