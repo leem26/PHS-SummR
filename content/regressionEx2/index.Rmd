@@ -53,7 +53,7 @@ summary(ols.fit_income)
 ```
 
 
-Let's used what we've learned about regression to look at how these concepts can be applied to data in `R`. As highlighted by the tweet above, regression is a tool we can use to understand the world we live in -- but we should never abstract it from our subject matter knowledge or stop questionning alternative explanations (as a side note, I **highly** recommend following @EpiEllie on twitter... it's :fire: :100: :fire: :100: and perfect for procrasti-learning) 
+Let's use what we've learned about regression to look at how these concepts can be applied to data in `R`. As highlighted by the tweet above, regression is a tool we can use to understand the world we live in -- but we should never abstract it from our subject matter knowledge or stop questionning alternative explanations (as a side note, I **highly** recommend following @EpiEllie on twitter... it's :fire: :100: :fire: :100: and perfect for procrasti-learning) 
 
 
 ## Simulate some data 
