@@ -698,7 +698,7 @@ ggplot(big.100, aes(x = A.con, y = Y.con)) +
 ```
 
 
-The standard deviation of our `A.con` or `Y.con` variable is the average distance between each point and their group means. 
+The standard deviation of our `A.con` or `Y.con` variable is the average deviation between each point and their group means, i.e.  $\sigma = \sqrt{\frac{\sum_{i=1}^n (x - \bar{x})^2}{n}}$, and is on the **original scale** of the variable
 
 ---
 <!-------------------------------------->
