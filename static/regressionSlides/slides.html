@@ -436,7 +436,7 @@ $$ \rho_{X,Y} = \frac{\text{Cov(X,Y)}}{\sqrt{\text{Var}(X)}\sqrt{\text{Var}(Y)}}
 Unlike the covariance, the correlation `\(\rho\)` is:
 - **Not** sensitive to scale, and is bounded between -1 and 1
 - **Does** tell us about the strength of the relationship
-- Intuitive, the correlation between a r.v. with itself is `\(\rho_{X,X} = 1\)`
+- **More intuitive**, the correlation between a r.v. with itself is `\(\rho_{X,X} = 1\)`
   
   
 ---
@@ -817,7 +817,7 @@ $$E(Y \mid X = (x + 1)) = \beta_0 + \beta_1 (x + 1) \tag{2} $$
 
 # 5a. statistical model
 
-If we subtract equation (2) from equation (1), we get:
+If we subtract equation (1) from equation (2), we get:
 `\begin{align*}
   E(Y \mid X = (x + 1)) - E(Y \mid X = x) &amp;=  \beta_0 + \beta_1 (x + 1)\\
   &amp; \  - (\beta_0 + \beta_1 x) \\
@@ -869,7 +869,7 @@ Let's look at the steps in the OLS algorithm:
 &lt;img src="slides_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
 
 &lt;ol start = 2&gt;
-&lt;li&gt; Calculate the difference between the observed points and the value of `\(E(Y)\)` predicted by our candidate model, and square it.  
+&lt;li&gt; Calculate the difference between the observed points and the value of E(Y) predicted by our candidate model, and square it.  
 &lt;/ol&gt;
 
 ---
