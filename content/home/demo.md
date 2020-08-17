@@ -50,5 +50,15 @@ subtitle = ""
  css_class = ""
 +++
 
-Welcome to the Population Health Science End of Summer Camp 2020, we're excited for you to join us! Here you will find select <code>R</code> exercises, lecture slides, and supplemental material that will be referenced during our lectures. If you have any questions during these sessions, please feel free to reach out to any of the teaching fellows (Jack, Kat, Matt, or Unnati) or use the contact form below. 
+Welcome to the Population Health Science SummR Camp 2020, we're excited for you to join us! Here you will find select <code>R</code> exercises, lecture slides, and supplemental material that will be referenced during our lectures. If you have any questions during these sessions, please feel free to reach out to any of the teaching fellows (Jack, Kat, Matt, or Unnati) or use the contact form below. A schedule of this week's sessions is also found below. 
+
+
+
+
+
+
+
+
+
+
 
