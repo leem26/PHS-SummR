@@ -43,8 +43,16 @@
   url = "matricesEx"
   parent = "mathExParent"
 
+[[main]]
+  name = "Warm-ups"
+  url = "warmupParent"
+  identifier = "warmupParent"
+  weight = 10
 
-
+[[main]]
+  name = "Math Notation"
+  url = "https://www.overleaf.com/7572393255xbgsdqhqwjdj"
+  parent = "warmupParent"
 
 
 
