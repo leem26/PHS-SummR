@@ -54,13 +54,14 @@ subtitle = ""
 
 | Date/Time | Zoom meeting ID | Session Description |
 |-----------|-----------------|---------------------|
-| Monday 8/24, 2-3:30pm    EST | See Canvas Site | Introduction, Values affirmation, Intro to R programming |
-| Tuesday 8/25, 2-3:30pm   EST | See Canvas Site | Intro to mathematical notation and typesetting | 
-| Wednesday 8/26, 9am-12pm EST | See Canvas Site | Review of mathematical concepts |
-| Wednesday 8/26, 2-3:30pm EST | See Canvas Site | Review of probability and statistics | 
-| Thursday 8/27, 9am-12pm  EST | See Canvas Site | Review of variable relationships and linear regression |
-| Thursday 8/27, 2-3:30pm  EST | See Canvas Site | Harvard Graduate Student Union presentation, Student panel | 
-| Friday 8/28, 2-3:30pm    EST | See Canvas Site | Wrap-up, One-on-one meetings as needed | 
+| Monday 8/24, 2-3:30pm    EST  | See Canvas Site | Welcome and Intro to R |
+| Tuesday 8/25, 2-3:30pm   EST  | See Canvas Site | Mathematical Notation |
+| Wednesday 8/26, 9am-12pm EST  | See Canvas Site | Math Review  |
+| Wednesday 8/26, 2-3:30pm EST  | See Canvas Site | Probability Review |
+| Thursday 8/27, 9-10am  EST    | See Canvas Site | Math and Probability Group Exercises |
+| Thursday 8/27, 10am-12pm  EST | See Canvas Site | Regression Review |
+| Thursday 8/27, 2-3:30pm  EST  | See Canvas Site | PHS Student Panel and Breakout Session | 
+| Friday 8/28, 2-3:30pm    EST  | See Canvas Site | Harvard Graduate Student Union Presentation, SummR Camp Wrap-Up |
 
 </center>
 
