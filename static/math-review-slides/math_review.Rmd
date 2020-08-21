@@ -1,0 +1,1150 @@
+---
+title: "SummR Camp"
+subtitle: "Mathematics Review: Matrices and Functions"  
+author: "Kat Sadikova (many thanks to Louisa H. Smith)"
+date: 'August 26, 2020'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      beforeInit: "macros.js"
+      ratio: 16:9
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class:middle,center
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE, width = 93)
+knitr::opts_chunk$set(fig.retina = 3, out.width = "100%", fig.align = "center", message = FALSE, warning = FALSE)
+knitr::opts_hooks$set(fig.callout = function(options) {
+  if (options$fig.callout) {
+    options$echo <- FALSE
+    options$out.height <- "99%"
+    options$fig.width <- 16
+    options$fig.height <- 8
+  }
+  options
+})
+library(tidyverse)
+reveal <- function(name, num) {
+  content <- knitr:::knit_code$get(name)
+  last_line <- which(str_detect(content, "\\+"))[num]
+  if (is.na(last_line)) last_line <- length(content)
+  if (num == 1) {
+    first_line <- 1
+  } else {
+    first_line <- which(str_detect(content, "\\+"))[num - 1] + 1
+  }
+  content[last_line] <- str_remove(content[last_line], "\\+")
+  new_lines <- paste0(content[first_line:last_line], " #<<")
+  orig_lines <- if (num == 1) 0 else 1:(first_line - 1)
+  c(content[orig_lines], new_lines)
+}
+
+set.seed(6789)
+n <- 10
+dat <- data.frame(
+  age = round(runif(n, 22, 45)),
+  height = round(rnorm(n, 66, 4)),
+  likes_dogs = rbinom(n, 1, .75)
+)
+dat$yob <- 2019 - dat$age
+dat <- as.matrix(dat)
+v <- c(2, 4, 3)
+w <- c(4, 1, 2)
+X <- matrix(c(6, 3, 1, 6, 2, 3), ncol = 3)
+```
+```{css, echo=FALSE}
+/* custom.css */
+.title-slide {
+  background-image: url("img/camp.svg");
+  background-size: cover;
+}
+
+.left-code {
+  #color: #777;
+  width: 43%;
+  height: 92%;
+  float: left;
+  #font-size: 0.8em;
+  position: absolute;
+}
+.right-plot {
+  width: 50%;
+  float: right;
+  padding-left: 5%;
+}
+.left-col {
+  width: 60%;
+  float: left;
+  position: absolute;
+}
+.right-col {
+  width: 30%;
+  float: right;
+  padding-left: 5%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+
+h4 {
+  color: #F97B64;
+  font-size: 22px;
+}
+
+h5 {
+  color: #317B33;
+  font-size: 22px;
+}
+
+h1, h2, h3, h4, h5 {
+  margin-top:0;
+}
+
+.inverse h1, .inverse h2, .inverse h3 {
+  color: #1F4257;
+}
+.remark-slide thead, .remark-slide tr:nth-child(2n) {
+  background-color: white;
+}
+.title-slide, .title-slide h1, .title-slide h2, .title-slide h3 {
+color: #FFFFFF;
+}
+```
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+duo_accent(
+  primary_color = "#1F4257",
+  secondary_color = "#F97B64",
+  header_font_google = google_font("Lexend Deca"),
+  text_font_google = google_font("Noto Sans")
+)
+```
+
+
+<!-- # Check-in -->
+
+<!-- Please answer a few questions in this [check-in](https://forms.gle/TLtGxnFXAfd1jHYZ6) before we begin. -->
+
+
+.left[
+# Part 1: Matrices and linear algebra basics
+]
+
+#### Intuition and basic tools relevant for quantitative methods in population health sciences
+
+---
+
+class:middle,center
+.left[
+### Scalars, vectors, matrices
+]
+
+$a = a \text{ , a scalar}$
+
+<br>
+--
+
+$\mathbf{y} =\begin{bmatrix}y_1 \\ y_2 \\ \vdots \\ y_n\end{bmatrix}\text{,  a vector of length } n$
+
+<br>
+--
+
+$\mathbf{X} = \begin{bmatrix} x_{11} & x_{12} & \cdots & x_{1p} \\ x_{21} & x_{22} & \cdots & x_{2p} \\ \vdots &\vdots & \ddots & \vdots \\x_{n1} & x_{n2} & \cdots & x_{np}\end{bmatrix} \text{,  an }n \times p \text{ matrix}$
+
+
+---
+
+
+.left[
+### Note on dimensions
+]
+
+.right-col[
+
+![](https://media.giphy.com/media/5yLgocAcF0DYJHZtQqs/giphy.gif)
+
+
+Imagine this very happy Ron Swanson **Rowing a Canoe** and remember that **Rows come before Columns** when indexing elements of a matrix
+]
+
+.left-col[
+We read dimensions like $n \times p$ as **rows** by **columns**. $X$ is a 3x4 matrix:
+
+$$\mathbf{X}_{3 \times 4} = \begin{bmatrix} x_{11} & x_{12} & x_{13} & x_{14}\\ x_{21} & x_{22} & x_{23} & x_{24}\\ x_{31} & x_{32} & x_{33} & x_{34} \end{bmatrix}_{3\times 4}$$
+<br>
+--
+
+Individual elements are indexed in the same *row-column* order: $x_{23}$ is the element in the second row and third column.
+]
+---
+
+
+
+class:middle
+.left[
+### Data example
+]
+
+.left-col[
+Let's look at a simple example - data stored in a matrix $\mathbf{X}$ with 10 individuals and 4 variables:
+- age in years
+- height in inches
+- a dichotomous indicator of whether the individual likes dogs
+- year of birth
+]
+
+
+.right-col[
+
+$\mathbf{X} = \begin{bmatrix} 25 & 67 & \cdots & 1995 \\ 38 & 63 & \cdots & 1982 \\ \vdots &\vdots & \ddots & \vdots \\ 41 & 59 & \cdots & 1979 \end{bmatrix}$
+
+
+$\mathbf{age} = \begin{bmatrix} 25 \\ 38 \\ \vdots \\ 41 \end{bmatrix}$
+
+
+$age_{1} = 25$
+]
+---
+
+.left[
+### Data example: in R
+]
+
+__Build the data set__
+
+``` {r, echo=TRUE}
+set.seed(6789)
+n <- 10
+dat <- data.frame(
+  age = round(runif(n, 22, 45)), height = round(rnorm(n, 66, 4)), likes_dogs = rbinom(n, 1, .53)
+)
+dat$yob <- 2020 - dat$age
+dat <- as.matrix(dat)
+
+dat
+```
+---
+
+.left[
+### Data example: in R
+]
+
+__What are the dimensions of this matrix?__
+```{r, echo=TRUE}
+# both dimensions
+dim(dat)
+# number of rows
+nrow(dat)
+# number of columns
+ncol(dat)
+```
+---
+
+
+.left[
+### Data example: in R
+]
+
+__Let's inspect parts of this matrix (vectors and scalars)__
+
+```{r, echo=TRUE}
+# Extract everyone's age (column vector)
+dat[,1]
+
+# Find out if participant 2 likes dogs (scalar)
+dat[2,3]
+```
+
+##### Q: How do we get all the data for participant 7?
+
+---
+
+### The geometry of vectors
+.left-code[
+Let's look at the age, height and shoe size of participants 1 and 2:
+$$\mathbf{x}_1 = \begin{bmatrix} 25 \\ 67 \\10.5 \end{bmatrix} \quad \mathbf{x}_2 = \begin{bmatrix} 38 \\ 66.5 \\ 7 \end{bmatrix}$$
+
+The more attributes we measure about people, the higher-dimensional the space -- and the more precisely we can describe each person (they're not near anyone else in space).
+]
+
+.right-plot[
+```{r, echo = FALSE}
+library(plotly)
+dat3d <- tibble(
+  y = c(25, 38, 24, 39),
+  z = c(67, 66.5, 60, 70),
+  x = c(10.5, 7, 6, 11),
+  color = c("red", "blue", "clear", "clear"),
+  size = c(1, 1, 0, 0)
+)
+plot_ly(dat3d, x = ~x, z = ~z, y = ~y, color = ~color, colors = c("red", "white", "blue"), size = c(4, 4, 0, 0), type = "scatter3d", mode = "markers", width = 500, height = 500) %>%
+  layout(
+    scene = list(
+      yaxis = list(title = "age"),
+      xaxis = list(title = "shoe size"),
+      zaxis = list(title = "height"),
+      camera = list(
+        up = list(x = 0, y = 0, z = 1),
+        eye = list(x = 2.5, y = 0.1, z = 0.1),
+        center = list(x = 0, y = 0, z = 0)
+      )
+    ),
+    showlegend = FALSE
+  )
+```
+]
+---
+
+
+class:middle
+.left[
+### Transposing vectors and matrices
+]
+
+We can flip a vector on its side by **transposing** it.
+
+$\mathbf{x}_1 = \begin{bmatrix} 25 \\ 67 \\10.5 \end{bmatrix} \quad \mathbf{x}_2 = \begin{bmatrix} 38 \\ 66.5 \\ 7 \end{bmatrix}$
+
+$\mathbf{x}_1^T = \begin{bmatrix} 25 & 67 & 10.5 \end{bmatrix} \quad \mathbf{x}_2^T = \begin{bmatrix} 38 & 66.5 & 7 \end{bmatrix}$
+
+<br>
+--
+
+**Note:** We may also refer to transposed vectors (and matrices) with "prime" notation: $\mathbf{x}_1^T = \mathbf{x}_1'$
+(Not to be confused with a derivative!)
+
+<br>
+--
+
+Stack these row vectors and you have a matrix!
+
+$\mathbf{X} = \begin{bmatrix} \mathbf{x}_1^T \\ \mathbf{x}_2^T \end{bmatrix} = \begin{bmatrix} 25 & 67 & 10.5 \\ 38 & 66.5 & 7 \end{bmatrix}$
+
+<br>
+--
+
+##### Q: What are the dimentions of $\mathbf{X}$? 
+
+---
+
+
+class:middle
+.left[
+### Transposing vectors and matrices
+]
+
+We can also think of vectors as single-columned matrices:
+
+- A column vector $\mathbf{y}$ of length $n$ has dimensions $n \times 1$.
+.center[
+$\begin{bmatrix}y_1 \\ y_2 \\ \vdots \\ y_n\end{bmatrix}_{n\times 1}$
+]
+
+
+- A row vector $\mathbf{y}'$  of length $n$ has dimensions $1 \times n$.
+.center[
+$\begin{bmatrix}y_1 & y_2 & \cdots & y_n\end{bmatrix}_{1\times n}$
+]
+
+Thinking about vectors this way will be really handy when we multiply vectors and matrices!
+
+---
+
+
+class:middle
+.left[
+### Transposing vectors and matrices
+]
+
+We can also transpose matrices
+
+$\mathbf{X} = \begin{bmatrix} 25 & 67 & \cdots & 1995 \\ 38 & 63 & \cdots & 1982 \\ \vdots &\vdots & \ddots & \vdots \\ 41 & 59 & \cdots & 1979 \end{bmatrix}\qquad \mathbf{X}^T = \mathbf{X}' = \begin{bmatrix} 25 & 38 & \cdots & 41 \\ 67 & 63 & \cdots & 59 \\ \vdots &\vdots & \ddots & \vdots \\ 1995 & 1982 & \cdots & 1979 \end{bmatrix}$
+
+
+The former columns (variables) are now rows. The former rows (participants) are now columns.
+
+---
+
+class:middle
+.left[
+### Transposing vectors and matrices
+]
+
+We can transpose a matrix using the `t()` function:
+```{r, echo=TRUE}
+t(dat)
+```
+If we save this as another object, we can extract elements using the **opposite** indices as before:
+
+```{r, echo=TRUE}
+dat_t <- t(dat)
+dat[3, 4] # participant 3's year of birth
+dat_t[4, 3]
+```
+
+---
+### Vector & matrix multiplication
+
+When we multiply a scalar by a vector or a matrix, we can just do so element by element:
+
+$a\mathbf{y} = \begin{bmatrix} ay_1 \\ ay_2 \\ \vdots \\ ay_n \end{bmatrix} \qquad \qquad \qquad a\mathbf{X} = \begin{bmatrix} ax_{11} & ax_{12} & \cdots & ax_{1p} \\ ax_{21} & ax_{22} & \cdots & ax_{2p} \\ \vdots &\vdots & \ddots & \vdots \\ ax_{n1} & ax_{n2} & \cdots & ax_{np} \end{bmatrix}$
+
+.center[
+#### But multiplying vectors and matrices requires special rules
+]
+---
+
+### Vector & matrix multiplication
+
+.left-col[
+We can only multiply vectors of the same length, and we have to **transpose** one before we can do so.
+
+- Consider two vectors of length $p$, $\mathbf{b}$ and $\mathbf{c}$:
+- Think of them as matrices, each with 1 column
+- To multiply them, their **inner** dimensions must match => must transpose one of them:
+
+$\mathbf{b}^T\mathbf{c} = \begin{bmatrix} b_1 \\ b_2 \\ \vdots \\ b_p \end{bmatrix}^T \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_p \end{bmatrix}$ 
+$= \begin{bmatrix} b_1 & b_2 & \cdots & b_p \end{bmatrix} \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_p \end{bmatrix}$
+$=b_1c_1 + b_2c_2 + \cdots + b_pc_p$ 
+$= \sum_{i = 1}^p b_ic_i$
+]
+
+
+.right-col[
+
+![](https://media.giphy.com/media/3WvdC5etwu52rLUAWm/giphy.gif)
+]
+
+---
+
+### (Note on dimensions)
+
+Notice that I explicitly wrote out the dimensions when multiplying $\mathbf{Y}_{m\times n}\mathbf{X}_{n\times p}\,$
+
+Just like we can only multiply vectors of the same length, dimensions of matrices must be compatible in order to be multiplied.
+
+.center[
+<iframe src="https://giphy.com/embed/ZDgXvr2vpsgZG" width="480" height="257" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/ZDgXvr2vpsgZG"></a></p>
+]
+
+The **inner dimensions** must match, then the resulting product is a matrix with the **outer dimensions**.
+
+.center[
+#### I think of this as the inner dimensions "collapsing"
+]
+---
+
+### Matrix $\times$ matrix multiplication
+
+Let's multiply a $m\times n$ matrix $\mathbf{Y}$ by the $n\times p$ matrix $\mathbf{X}$:
+
+$\mathbf{Y}_{m\times n}\mathbf{X}_{n\times p} = \begin{bmatrix} \mathbf{y_{11}} & \mathbf{y_{12}} & \cdots & \mathbf{y_{1n}} \\ y_{21} & y_{22} & \cdots & y_{2n} \\ \vdots &\vdots & \ddots & \vdots \\ y_{m1} & y_{m2} & \cdots & y_{mn} \end{bmatrix} \begin{bmatrix} \mathbf{x_{11}} & x_{12} & \cdots & x_{1p} \\ \mathbf{x_{21}} & x_{22} & \cdots & x_{2p} \\ \vdots &\vdots & \ddots & \vdots \\ \mathbf{x_{n1}} & x_{n2} & \cdots & x_{np}\end{bmatrix}$
+$= \begin{bmatrix} \mathbf{z_{11}} &  & \cdots &  \\ &  & \cdots & \\ \vdots &\vdots & \ddots & \vdots \\  &  & \cdots &\end{bmatrix}$
+
+where $\mathbf{z}_{11}$ is the product of the first **row** of $\mathbf{Y}$ and the first **column** of $\mathbf{Y}$ 
+
+<br>
+--
+
+.center[
+$\mathbf{z}_{11} = \sum_{i = 1}^n y_{1i}x_{i1}$
+]
+
+---
+
+### Matrix $\times$ matrix multiplication
+
+Now we do the same vector-vector multiplication with every pair of a row from $\mathbf{Y}$ and a column from $\mathbf{X}$
+
+$\mathbf{Y}_{m\times n}\mathbf{X}_{n\times p} = \begin{bmatrix} \mathbf{y_{11}} & \mathbf{y_{12}} & \cdots & \mathbf{y_{1n}} \\ y_{21} & y_{22} & \cdots & y_{2n} \\ \vdots &\vdots & \ddots & \vdots \\ y_{m1} & y_{m2} & \cdots & y_{mn} \end{bmatrix} \begin{bmatrix} x_{11} & \mathbf{x_{12}} & \cdots & x_{1p} \\ x_{21} & \mathbf{x_{22}} & \cdots & x_{2p} \\ \vdots &\vdots & \ddots & \vdots \\ x_{n1} & \mathbf{x_{n2}} & \cdots & x_{np} \end{bmatrix}$
+$= \begin{bmatrix} z_{11} & \mathbf{z_{12}} & \cdots &  \\ &  & \cdots & \\ \vdots &\vdots & \ddots & \vdots \\ &  & \cdots & \end{bmatrix}$
+
+(You don't have to do it in any particular order, just keep multiplying until all row-column pairs have been multiplied.)
+
+.center[
+##### Q: What's the expression for $\mathbf{z}_{23}$?
+]
+
+<br>
+--
+
+$\mathbf{z}_{23} = \sum_{i = 1}^n y_{2i}x_{i3}$
+
+
+---
+
+### Matrix $\times$ matrix multiplication: in R
+
+``` {r, echo=TRUE}
+X <- matrix(c(6, 3, 1, 6, 2, 3), ncol = 3)
+X
+
+tX = t(X)
+tX
+
+Z = tX%*%X
+Z
+```
+
+---
+
+### Matrix $\times$ matrix multiplication: in R
+
+``` {r, echo=TRUE}
+Z = tX%*%X
+Z
+
+tX[1,]%*%X[,1]
+```
+
+
+---
+### Identity matrix
+
+We all know 1 is special. When you multiply a number by 1, you get the same number.
+
+Matrices have their own special matrix, the identity matrix: $\mathbf{I}$.
+
+.center[
+$\mathbf{XI} = \mathbf{X} \text{ for any matrix } \mathbf{X}$
+]
+
+<br>
+--
+
+For example:
+
+$\mathbf{QI} = \begin{bmatrix} r & s & t \\ u & v & w \end{bmatrix}_{2\times3}\begin{bmatrix} 1 & 0 &  0 \\ 0 & 1 & 0 \\  0 & 0 &  1\end{bmatrix}_{3\times3} = \begin{bmatrix} r & s & t \\ u & v & w \end{bmatrix}_{2\times3}$
+
+---
+### Symmetrical matrixes
+
+The identity matrix $\mathbf{I}$ is an example of a symmetric matrix: $\mathbf{I}_{i,j}$ = $\mathbf{I}_{j,i}$ for any $i$, $j$ where $i \ne j$
+
+If you multiply a matrix by itself, the result is also a symmetric matrix:
+
+.center[
+$\mathbf{Q}^T\mathbf{Q} = \begin{bmatrix} r^2 + u^2 & rs + uv & rt + uw \\ rs + uv & s^2 + v^2 & st + vw \\ rt + uw & st + vw & t^2 + w^2 \end{bmatrix}$
+]
+
+---
+
+### Inverse of a matrix and linear independence
+
+The inverse of a matrix $\mathbf{Q}$ is the matrix $\mathbf{Q^{-1}}$ such that $$\mathbf{Q}\mathbf{Q^{-1}} = \mathbf{I}$$
+
+- For a scalar $a$, $a^{-1}=\frac{1}{a}$ is the multiplicative inverse of $a$: when we multiply the two together, we get 1
+- For a matrix, the inverse is much more difficult to find, and does not exist if the columns are **linearly dependent**
+
+---
+### Inverse of a matrix and linear independence: in R
+.pull-left[
+We can attempt to invert a matrix using the `solve()` function:
+```{r, echo = FALSE}
+mat_a <- matrix(c(2, 6, 1, 8), ncol = 2)
+```
+
+```{r}
+mat_a
+solve(mat_a)
+```
+]
+
+
+.pull-right[
+
+We can check to make sure this is the inverse:
+
+```{r}
+mat_a_inv <- solve(mat_a)
+mat_a_inv %*% mat_a
+```
+#### We get the identity matrix $\mathbf{I}$!
+]
+
+---
+### Inverse of a matrix and linear independence: in R
+
+What if we have a matrix whose columns are not linearly independent?
+
+```{r, echo = FALSE}
+mat_b <- matrix(c(2, 6, 1, 3), ncol = 2)
+```
+
+```{r,error = TRUE}
+mat_b
+solve(mat_b)
+```
+
+**Whenever you get an error message about something being "singular", that's code for a matrix not being invertible -- check for linear dependence!** 
+
+##### Q: How could you tell the matrix above is not invertible?
+
+
+---
+
+### Inverse of a matrix and linear independence
+
+
+Consider a situation in which we're predicting height as a linear function of several variables we have in our dataset: age in years, shoe size, and age in months.
+
+.center[
+
+$\textbf{height} = \begin{bmatrix} 51 \\ 61 \\ 52 \\ 65 \\ 60 \\ 48 \end{bmatrix} \qquad \qquad \textbf{other variables} = \begin{bmatrix} 30  & 7 & 360 \\ 31 & 10 & 372 \\ 25 & 9 & 300 \\ 35 & 10 & 420 \\ 42 & 6 & 504 \\ 27 & 7 & 324 \end{bmatrix}$
+
+]
+
+.pull-left[
+We can plot predicted height as a function of age in years alone. This is a line.
+]
+
+.pull-right[
+
+.center[
+
+```{r, echo = FALSE}
+set.seed(6789)
+newdat <- tibble(
+  age = c(30, 31, 25, 35, 42, 27),
+  shoesize = round(runif(6, 6, 12)),
+  height = round(age + shoesize * 3),
+  yob =  age * 12
+)
+
+fit_age <- lm(height ~ age, data = newdat)
+fit_age_shoe <- lm(height ~ age + shoesize, data = newdat)
+fit_age_year <- lm(height ~ age + yob, data = newdat)
+
+newdat <- newdat %>%
+  mutate(
+    p_age = fitted(fit_age),
+    p_age_shoe = fitted(fit_age_shoe),
+    p_age_year = fitted(fit_age_year)
+  )
+
+# predict over sensible grid of values
+ages <- unique(newdat$age)
+shoes <- unique(newdat$shoesize)
+d <- with(newdat, expand.grid(age = ages, shoesize = shoes))
+vals_shoes <- predict(fit_age_shoe, newdata = d)
+
+# form matrix and give to plotly
+m_shoes <- matrix(vals_shoes, nrow = length(unique(d$age)), ncol = length(unique(d$shoesize)))
+
+plot_ly(newdat, x = ~age, y = ~p_age, type = "scatter", mode = "markers", width = 220, height = 220) %>%
+  add_lines(x = ~age, y = ~p_age, color = I("lightgrey")) %>%
+  layout(
+    xaxis = list(title = "age in years"),
+    yaxis = list(title = "predicted height"),
+    showlegend = FALSE,
+    autosize = FALSE
+  )
+```
+]
+
+]
+
+---
+### Linear independence, cont.
+
+.pull-left[
+If we plot predicted height as a function of age in years *and* shoe size, we get a **plane**.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+That is, we get more information about height from knowing someone's shoe size. If two people are the same age, but have different shoe sizes, we'll predict different heights for them.
+]
+
+.pull-right[
+.center[
+
+```{r, echo = FALSE}
+plot_ly(newdat, x = ~shoesize, z = ~p_age_shoe, y = ~age, type = "scatter3d", mode = "markers", width = 400, height = 400) %>%
+  add_surface(x = ~shoes, y = ~ages, z = ~m_shoes, colorscale = list(c(0, 1), c("lightgrey", "lightgrey"))) %>%
+  layout(
+    scene = list(
+      yaxis = list(title = "age in years"),
+      xaxis = list(title = "shoe size"),
+      zaxis = list(title = "predicted height"),
+      camera = list(
+        up = list(x = 0, y = 0, z = 1),
+        eye = list(x = 2.5, y = 0.01, z = 0.2),
+        center = list(x = 0, y = 0, z = 0.2)
+      )
+    ),
+    showlegend = FALSE
+  ) %>% hide_colorbar()
+```
+]
+]
+
+
+---
+### Linear dependence
+
+.pull-left[
+But if we plot predicted height as a function of age in years and *age in months*, we get a line again, instead of a plane.
+
+<br>
+<br>
+
+
+That's because age in years and age in months are **linearly dependent**: we can write one as a linear combination of the others; that is, age in months = 12 $\times$ age in years.
+
+We don't get any extra information from knowing age in months that we didn't already have from age in years.
+]
+
+.pull-right[
+.center[
+```{r, echo = FALSE}
+plot_ly(newdat, x = ~yob, z = ~p_age_year, y = ~age, type = "scatter3d", mode = "markers", width = 400, height = 400) %>%
+  add_lines(x = ~yob, z = ~p_age_year, y = ~age, color = I("lightgrey")) %>%
+  layout(
+    scene = list(
+      yaxis = list(title = "age in years"),
+      xaxis = list(title = "age in months"),
+      zaxis = list(title = "height"),
+      camera = list(
+        up = list(x = 0, y = 0, z = 1),
+        eye = list(x = 2.5, y = 0.01, z = 0.2),
+        center = list(x = 0, y = 0, z = 0.2)
+      )
+    ),
+    showlegend = FALSE
+  )
+```
+]
+]
+
+
+---
+### In "real life"
+
+Linear dependence will come into play when we cover regression. In the meantime, we can practice some regression matrix notation! You may be used to seeing a linear regression equation written out like this:
+
+.center[
+$y_i = \beta_0 + \beta_1x_{i1} +\beta_1x_{i2} + \epsilon_i$
+]
+
+Well, that's the same thing as:
+
+.center[
+$y_i = \boldsymbol{\beta}^T\mathbf{x}_i + \epsilon_i$
+]
+
+where
+$\;\boldsymbol{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \end{bmatrix}_{3 \times 1}\;$ and $\;\mathbf{x}_i = \begin{bmatrix} x_{i0} \\ x_{i1} \\ x_{i2} \end{bmatrix}_{3 \times 1}$ where $x_{i0} = 1$ for all i
+
+<br>
+
+.center[
+#### Try multiplying it out by hand, first making sure the dimensions are compatible (notice the necessity to transpose $\;\boldsymbol{\beta}$)!
+]
+
+Stay tuned for more on this when we cover regression analysis 😁
+
+---
+class:middle
+
+background-image: url("img/resources.jpg")
+
+background-size:cover
+
+
+# More resources
+
+.pull-left[
+
+[**This**](https://www.khanacademy.org/math/precalculus/precalc-matrices) whole section has a lot of great information and practice with matrices. 
+
+For a more advanced introduction, work through the sections on vectors, linear combinations, and linear dependence [**here**](https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces). 
+
+You can also pick and choose from the videos [**here**](https://www.khanacademy.org/math/linear-algebra/matrix-transformations), particularly those on functions and linear transformations.
+]
+
+---
+
+class:middle,center
+.left[
+# Part 2: Functions, data transformations and a sprinkle of calculus
+]
+
+#### Now that we've explored how data is stored, let's look at how data can be transformed 
+
+---
+### Logarithms
+
+.left-code[
+If you see $\log(x)$ in this class, or basically anywhere in probability and statistics, it will refer to the natural logarithm, or $\ln(x)$.
+
+#### What do you notice about the function $\log(x)$?
+
+<br>
+<br>
+<br>
+<br>
+
+You can only "log" a positive number. Something like $\log(-1)$ is undefined. We can see that $\lim_{x \to 0}\log(x) = -\infty$. Importantly, $\log(1) = 0$, so $\log(x)$ for any $x$ between 0 and 1 will give you a negative number.
+]
+
+.right-plot[
+
+```{r logGraph, echo = F}
+curve(log(x), xlim = c(0, 4), ylab = "log(x)", xlab = "x", main = "log(x)")
+abline(h = 0, lty = "dashed")
+points(1, 0, col = "red")
+```
+]
+
+---
+### Exponentiation
+.left-code[
+The **inverse** of the natural log is the natural expontial function $e^x$, which we also write as $\exp(x)$:
+
+.center[
+$\exp(x) = y \iff x = \log(y)$
+]
+
+so if one side of an equation is exponentiated, we can always "get out of it" by applying a logarithm to both sides, and vice versa.
+
+.center[
+$\log(\exp(x)) = x\;$ and $\;\exp(\log(x)) = x$
+]
+
+#### But we can't do that if x is negative! Recall that we can't take a log of a negative number, and exponentiating a number is never going to give us anything negative.
+]
+
+.right-plot[
+
+```{r expGraph, echo = F}
+curve(exp(x), xlim = c(-4, 4), ylab = "exp(x)", xlab = "x", main = "exp(x)")
+abline(h = 0, lty = "dashed")
+points(0, 1, col = "red")
+```
+]
+
+---
+### Rules to live by
+
+When we have a sum inside an exponent, we can decompose this into the product of two exponents:
+$$\exp(a + b) = \exp(a)\exp(b)$$
+Similarly, a product inside a logarithm can be written as a sum of logs:
+$$\log(ab) = \log(a) + \log(b)$$
+Of course, the same is true of the inverses of addition and multiplication, subtraction and division:
+$$\exp(a - b) = \frac{\exp(a)}{\exp(b)}$$
+$$\log\left(\frac{a}{b}\right) = \log(a) - \log(b)$$
+
+#### You will need to know these rules to understand various regression models in this class, I promise!
+
+---
+
+### Why do we care?
+
+The log function takes a number $x$ constrained to be $>0$, and transforms it onto an unbounded number space
+
+- Probability: ranges from 0 to 1 (strictly constrained)
+- Say we know $Pr[likesdogs=1]$ is a function of age and height: how do we take 2 numbers, both outside the range of 0 to 1, and get a probability that is strictly between 0 and 1?
+
+.center[
+![](https://media.giphy.com/media/4JVTF9zR9BicshFAb7/giphy.gif)
+
+#### The logit function is here to help!
+]
+---
+
+### Odds and probabilities
+.pull-left[
+Let's break it down. Think about flipping a coin lots of times: heads you win, tails you lose.
+
+- A **probability** describes the number of successes out of the total number of trials (a proportion)
+- An **odds** describes the number of successes compared the the number of failures (a ratio)
+
+Let's say you get 4 heads out of 10 flips:
+
+- probability = $\frac{4}{10}$
+- odds = $\frac{4}{6}$
+
+#### These are really different numbers!
+
+]
+
+.pull-right[
+<br>
+<br>
+.center[
+$odds = \frac{prob}{1 - prob}$
+
+
+$prob = \frac{odds}{1 + odds}$
+]
+]
+
+---
+### Logits and expits
+
+.left-code[
+
+The **logit** of $p$, aka the **log-odds** of $p$, can take a number between 0 and 1 (like a probability!) and transform it to a number between $-\infty$ and $\infty$.
+
+.center[
+$logit(p) = \log\left(\frac{p}{1 - p}\right)$
+]
+
+We can invert it to get the **expit** function, which can take any number on the real line and transform it to a value between 0 and 1:
+
+.center[
+$expit(x) = \frac{\exp(x)}{1 + \exp(x)}$
+]
+
+]
+
+
+.right-plot[
+
+``` {r logitGraph, echo=FALSE}
+curve(log(x/(1-x)), xlim = c(0, 1), ylab = "logit(x)", xlab = "x", main = "logit(x)")
+abline(h = 0, lty = "dashed")
+```
+]
+---
+
+### Back to the data example:
+
+``` {r, echo=FALSE}
+set.seed(6789)
+n <- 10
+dat <- data.frame(
+  age = round(runif(n, 22, 45)), height = round(rnorm(n, 66, 4)), likesdogs = rbinom(n, 1, .53)
+)
+dat$yob <- 2020 - dat$age
+
+dat
+```
+
+---
+
+### Back to the data example:
+
+Consider the following logistic regression model for the predicted probability that someone likes dogs ( $p_i$ ) given their age in years ( $x_i$ ):
+
+$\widehat{\log\left(\frac{p_i}{1-p_i}\right)} = 0.4 + 0.07*age_i - 0.005*height_i$
+
+#### What's the probability that person 4 likes dogs?
+
+.left-col[
+
+Log-odds: $\log\left(\frac{p_4}{1-p_4}\right) = 0.4 + 0.07*36 - 0.005*70 = 2.57$
+
+Odds: $\frac{p_4}{1-p_4} = \exp\left(2.57\right) = 13.066$
+
+Probability: $p_4 = \frac{13.066}{1+13.066} = \frac{\exp\left(0.4 + 0.07*36 - 0.005*70\right)}{1 + \exp\left(0.4 + 0.07*36 - 0.005*70\right)} = 0.929$
+
+]
+
+.right-col[
+![](https://hips.hearstapps.com/ghk.h-cdn.co/assets/17/30/1500925839-golden-retriever-puppy.jpg)
+
+##### Q: What's the probability of liking dogs of a person who's 20 years old and 67 inches tall?
+]
+
+---
+class: inverse, middle, center
+
+# A quick dip into calculus
+
+#### More intuition - less mechanics
+
+---
+
+### Derivatives
+
+.left-code[
+The basic idea of a derivative is that it describes the rate of change of a function. If the function we're looking at is $g(x)$, then there are a couple of ways we usually notate the first derivative of $g(x)$, which we'll use interchangeably:
+$$g'(x) = \frac{d}{dx}g(x)$$
+Both equivalently tell us that we are looking at the function $g(x)$ and taking the first derivative with respect to the variable $x$. That means that as $x$ changes, we want to know how much $g(x)$ changes. This is just the slope of $g(x)$ at a given value of $x$.
+]
+
+.right-plot[
+.center[
+
+#### Where is $g'(x)$ greatest?
+
+```{r slope1, echo = F}
+curve(dexp(x, rate = 3), xlim = c(0, 2), ylab = "g(x)")
+```
+
+]
+]
+
+---
+
+### More derivatives
+.left-code[
+.center[
+#### Where is $g'(x)$ greatest?
+
+```{r slope2, echo = F}
+curve(dchisq(x, 4), xlim = c(1, 4), ylab = "g(x)")
+```
+]
+]
+
+--
+
+.right-plot[
+#### Where does $g'(x) = 0$?
+
+When the first derivative is 0, the function may have reached its maximum or minimum.
+
+So if you want to maximize a function, one way to do so is to differentiate it and then set it equal to 0.
+]
+
+---
+### Integrals
+
+.left-code[
+We might want to describe a function by the area under its curve
+
+An integral tells us how much cumulative space a function is covering (in terms of distance from the $x$-axis) as $x$ gets larger.
+]
+
+.right-plot[
+In the graph of $f(x) = 2x^3 + 3x^2 + 4$ below, the area in blue is represented by the integral
+$$\int_{-2}^{2} 2x^3 + 3x^2 + 4 \; dx$$
+```{r index-3, echo = F, fig.height = 2, fig.width = 4, out.width = "70%"}
+par(mar = c(2.1, 4.1, 0.1, 2.1))
+func <- function(x) 2*x^3 + 3*x^2 + 4
+curve(func, xlim = c(-2, 3), ylab = "f(x)")
+coord_x <- c(-2, seq(-2, 2, length.out = 1000), 2)
+coord_y <- c(0, func(seq(-2, 2, length.out = 1000)), 0)
+polygon(coord_x, coord_y, col = "skyblue")
+```
+]
+
+---
+
+### Integrals
+
+.left-code[
+$$\int_{-2}^{2} 2x^3 + 3x^2 + 4 \; dx$$
+
+The values at the top and bottom of the integral sign are those between which we're computing the integral. We could integrate over the whole function, from $- \infty$ to $\infty$, or choose other limits of integration:
+
+
+```{r, echo = F, fig.height = 2, fig.width = 4, out.width = "70%"}
+
+par(mar = c(2.1, 4.1, 0.1, 2.1))
+func <- function(x) 2*x^3 + 3*x^2 + 4
+curve(func, xlim = c(-2, 3), ylab = "f(x)")
+coord_x <- c(1, seq(1, 3, length.out = 1000), 3)
+coord_y <- c(0, func(seq(1, 3, length.out = 1000)), 0)
+polygon(coord_x, coord_y, col = "purple")
+
+```
+
+#### What limits of integration are displayed here?
+]
+
+.right-plot[
+
+The integral of a non-negative function increases with $x$:
+
+$$\int_{-2}^{-1} 2x^3 + 3x^2 + 4 \; dx$$
+
+$$\leq \int_{-2}^{0} 2x^3 + 3x^2 + 4 \; dx$$
+
+$$\leq\int_{-2}^{1} 2x^3 + 3x^2 + 4 \; dx$$
+
+$$\leq \int_{-2}^{2} 2x^3 + 3x^2 + 4 \; dx$$
+
+and so on. On the graph, the area under the curve can only accumulate area, so the integral evaluated at greater and greater upper limits can only increase.
+
+]
+
+---
+### Data example
+
+Let's pretend we grabbed a larger sample from the population where we are examining age, height, affinity for dogs and year of birth:
+
+``` {r, echo=TRUE}
+set.seed(6789)
+n <- 1000
+dat <- data.frame(
+  age = round(runif(n, 22, 45)), height = round(rnorm(n, 66, 4)), likes_dogs = rbinom(n, 1, .53)
+)
+dat$yob <- 2020 - dat$age
+
+summary(dat)
+```
+
+---
+### Data example
+.center[
+__The distribution of height in inches__:
+``` {r, echo=FALSE, fig.height = 2, fig.width = 4, out.width = "70%"}
+library(ggplot2)
+library(tidyverse)
+library(gridExtra)
+library(grid)
+library(png)
+library(downloader)
+library(grDevices)
+# Basic histogram
+ggplot(dat, aes(x=height)) + 
+  geom_histogram(aes(y = stat(density)), binwidth = 1, fill="white", color="red") +
+  stat_function(
+    fun = dnorm, 
+    args = list(mean = mean(dat$height), sd = sd(dat$height)), 
+    lwd = 0.5, 
+    col = 'red'
+  ) +
+  ggtitle("PDF") -> p1
+
+ggplot(dat, aes(x=height)) + 
+  stat_ecdf(geom = "step", color="red") +
+  ggtitle("CDF") -> p2
+
+grid.arrange(p1, p2, ncol = 2)
+```
+
+##### Q: Roughly what proportion of the sample is <70 inches tall? What's an expression for this quantity in terms of the integral of the PDF of height? 
+
+]
+
+---
+class:middle
+
+background-image: url("img/resources.jpg")
+
+background-size:cover
+
+
+### More resources
+
+.pull-left[
+[**Here**](https://www.khanacademy.org/math/calculus-home/taking-derivatives-calc) is a **lot** of information about derivatives. You don't need more than the first few videos.
+
+Same with [**this**](https://www.khanacademy.org/math/calculus-home/integral-calculus/definite-integrals-intro-ic) intro to integrals. 
+
+Watch the video on antiderivatives and indefinite integrals from [**this**](https://www.khanacademy.org/math/calculus-home/integral-calculus/indefinite-integrals) page and some of those on [**this**](https://www.khanacademy.org/math/calculus-home/integral-calculus/fundamental-theorem-of-calculus-ic) page to understand the link between derivatives and integrals.
+]
+

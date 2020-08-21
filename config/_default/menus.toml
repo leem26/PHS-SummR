@@ -3,56 +3,77 @@
 #     desired widget in your `content/home/` folder.
 #   The weight parameter defines the order that the links will appear in.
 
+
+
+[[main]]
+  name = "Intro to R"
+  url = "intro-to-r"
+  weight = 1
+  identifier = "intro-to-r-parent"
+  
+  [[main]]
+    name = "Intro to R Slides"
+    url = "/intro-to-r/PHS_SummR_Camp_Intro_to_R_2020.pdf"
+    parent = "intro-to-r-parent"
+
+[[main]]
+  name = "Math Review"
+  url = "math-review"
+  weight = 2
+  identifier = "math-review-parent"
+  
+[[main]]
+  name = "Math Review Slides (html)"
+  url = "/math-review-slides/math_review.html"
+  parent = "math-review-parent"
+  weight = 1
+
+[[main]]
+  name = "Math Review Slides (pdf)"
+  url = "/math-review-slides/math_review.pdf"
+  parent = "math-review-parent"
+  weight = 2
+  
 [[main]]
   name = "Regression"
   url = "regressionEx"
-  weight = 1
+  weight = 3
   identifier = "regExParent"
   
-[[main]]
-  name = "Slides"
-  url = "/regressionSlides/slides.html"
-  parent = "regExParent"
-  weight = 1
-
-[[main]]
-  name = "ExRcise #1"
-  url = "regressionEx1"
-  parent = "regExParent"
-  weight = 2
+  [[main]]
+    name = "Reg Slides (html)"
+    url = "/regressionSlides/slides.html"
+    parent = "regExParent"
+    weight = 1
+    
+  [[main]]
+    name = "Reg Slides (pdf)"
+    url = "/regressionSlides/slides.pdf"
+    parent = "regExParent"
+    weight = 2
   
-[[main]]
-  name = "ExRcise #2"
-  url = "regressionEx2"
-  parent = "regExParent"
-  weight = 3
-
-[[main]]
-  name = "Math"
-  url = "mathEx"
-  weight = 2
-  identifier = "mathExParent"
-  
-[[main]]
-  name = "Kat Slide Test"
-  url = "/katSlideTest/index.html"
-  parent = "mathExParent"
-
-[[main]]
-  name = "Matrice Example"
-  url = "matricesEx"
-  parent = "mathExParent"
-
+  [[main]]
+    name = "ExRcise #1"
+    url = "regressionEx1"
+    parent = "regExParent"
+    weight = 3
+    
+  [[main]]
+    name = "ExRcise #2"
+    url = "regressionEx2"
+    parent = "regExParent"
+    weight = 4
+    
 [[main]]
   name = "Warm-ups"
   url = "warmupParent"
   identifier = "warmupParent"
   weight = 10
 
-[[main]]
-  name = "Math Notation"
-  url = "https://www.overleaf.com/7572393255xbgsdqhqwjdj"
-  parent = "warmupParent"
+  [[main]]
+    name = "Math Notation"
+    url = "https://www.overleaf.com/7572393255xbgsdqhqwjdj"
+    parent = "warmupParent"
 
 
 
