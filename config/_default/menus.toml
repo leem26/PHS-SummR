@@ -76,7 +76,7 @@
   
   [[main]]
     name = "Probability Slides (pdf)"
-    url = "https://canvas.harvard.edu/courses/77117/files/10445323/download?wrap=1"
+    url = "/prob-slides/SummRCamp_2020_ProbStats.pdf"
     parent = "prob-review-parent"
     weight = 2
 
