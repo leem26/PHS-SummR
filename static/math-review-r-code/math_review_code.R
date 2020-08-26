@@ -97,6 +97,10 @@ Z
 
 tX[1,]%*%X[,1]
 
+# NOTE!!! Order of matrices in the multiplication matters!
+W = X%*%tX
+W
+
 #########################################################
 # Slide 24: Inverse of a matrix and linear independence #
 

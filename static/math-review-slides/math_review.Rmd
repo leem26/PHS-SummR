@@ -456,7 +456,7 @@ Let's multiply a $m\times n$ matrix $\mathbf{Y}$ by the $n\times p$ matrix $\mat
 $\mathbf{Y}_{m\times n}\mathbf{X}_{n\times p} = \begin{bmatrix} \mathbf{y_{11}} & \mathbf{y_{12}} & \cdots & \mathbf{y_{1n}} \\ y_{21} & y_{22} & \cdots & y_{2n} \\ \vdots &\vdots & \ddots & \vdots \\ y_{m1} & y_{m2} & \cdots & y_{mn} \end{bmatrix} \begin{bmatrix} \mathbf{x_{11}} & x_{12} & \cdots & x_{1p} \\ \mathbf{x_{21}} & x_{22} & \cdots & x_{2p} \\ \vdots &\vdots & \ddots & \vdots \\ \mathbf{x_{n1}} & x_{n2} & \cdots & x_{np}\end{bmatrix}$
 $= \begin{bmatrix} \mathbf{z_{11}} &  & \cdots &  \\ &  & \cdots & \\ \vdots &\vdots & \ddots & \vdots \\  &  & \cdots &\end{bmatrix}$
 
-where $\mathbf{z}_{11}$ is the product of the first **row** of $\mathbf{Y}$ and the first **column** of $\mathbf{Y}$ 
+where $\mathbf{z}_{11}$ is the product of the first **row** of $\mathbf{Y}$ and the first **column** of $\mathbf{X}$ 
 
 <br>
 --
@@ -510,6 +510,15 @@ Z = tX%*%X
 Z
 
 tX[1,]%*%X[,1]
+```
+
+
+
+#### NOTE!!! Order of matrices in the multiplication matters!
+
+``` {r, echo=TRUE}
+W = X%*%tX
+W
 ```
 
 
@@ -742,7 +751,7 @@ plot_ly(newdat, x = ~yob, z = ~p_age_year, y = ~age, type = "scatter3d", mode = 
 Linear dependence will come into play when we cover regression. In the meantime, we can practice some regression matrix notation! You may be used to seeing a linear regression equation written out like this:
 
 .center[
-$y_i = \beta_0 + \beta_1x_{i1} +\beta_1x_{i2} + \epsilon_i$
+$y_i = \beta_0 + \beta_1x_{i1} +\beta_2x_{i2} + \epsilon_i$
 ]
 
 Well, that's the same thing as:

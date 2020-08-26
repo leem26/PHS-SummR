@@ -73,6 +73,12 @@
     url = "/math-review-r-code/math_review_code.R"
     parent = "math-review-parent"
     weight = 3
+  
+  [[main]]
+    name = "Math Annotations"
+    url = "/math-review-slides/SummR-Camp-Math-review-notes.pdf"
+    parent = "math-review-parent"
+    weight = 4
 
 [[main]]
   name = "Probability"
@@ -115,6 +121,12 @@
     url = "regressionEx2"
     parent = "regExParent"
     weight = 4
+  
+  [[main]]
+    name = "Exercise R code"
+    url = "/regressionEx-r-scripts/reg-exercises-R-code.zip"
+    parent = "regExParent"
+    weight = 5
     
 [[main]]
   name = "Warm-ups"
