@@ -68,6 +68,12 @@
     parent = "math-review-parent"
     weight = 2
 
+  [[main]]
+    name = "Math R Code"
+    url = "/math-review-r-code/math_review_code.R"
+    parent = "math-review-parent"
+    weight = 3
+
 [[main]]
   name = "Probability"
   url = "prob-review"
