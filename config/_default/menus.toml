@@ -90,7 +90,13 @@
     name = "Probability Slides (pdf)"
     url = "/prob-slides/SummRCamp_2020_ProbStats.pdf"
     parent = "prob-review-parent"
-    weight = 2
+    weight = 1
+  
+  [[main]]
+    name = "Probability Annotated (pdf)"
+    url = "/prob-slides/prob_annotated_slides.pdf"
+    parent = "prob-review-parent"
+    weight = 3
 
 [[main]]
   name = "Regression"
